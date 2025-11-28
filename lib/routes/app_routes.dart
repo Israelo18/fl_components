@@ -1,0 +1,74 @@
+import 'package:fl_components/models/models.dart';
+import 'package:fl_components/screens/myscreens/nations_home_screen.dart';
+import 'package:fl_components/screens/screens.dart';
+import 'package:flutter/material.dart';
+
+class AppRoutes {
+  static const initialRoute = "home";
+
+  static final MenuOptions = <MenuOption>[
+    MenuOption
+    (route: 'home',
+    icon: Icons.home_max_outlined,
+    name: 'Home',
+    screen: const HomeScreen()
+    ),
+    MenuOption
+    (route: 'listview1',
+    icon: Icons.list_alt_outlined,
+    name: 'ListView Tipo 1',
+    screen: const Listview1Screen()
+    ),
+    MenuOption
+    (route: 'nationsHome',
+    icon: Icons.list_sharp,
+    name: 'Naciones (ListView Tipo 2)',
+    screen: const NationsHomeScreen()
+    ),
+    MenuOption
+    (route: 'alert',
+    icon: Icons.add_alert_outlined,
+    name: 'Alertas',
+    screen: const AlertScreen()
+    ),
+    MenuOption
+    (route: 'card',
+    icon: Icons.card_travel_outlined,
+    name: 'Cards',
+    screen: const CardScreen()
+    ),
+    MenuOption
+    (route: 'avatar',
+    icon: Icons.supervised_user_circle_outlined,
+    name: 'Avatar',
+    screen: const AvatarScreen()
+    ),
+    MenuOption
+    (route: 'container',
+    icon: Icons.card_travel_outlined,
+    name: 'Container',
+    screen: const ContainerScreen()
+    ),
+    MenuOption
+    (route: 'inputs',
+    icon: Icons.input_rounded,
+    name: 'Forms. Inputs',
+    screen: const InputsScreen()
+    )
+  ];
+
+  static Map<String, Widget Function(BuildContext)> getAppRoutes(){
+    Map<String, Widget Function(BuildContext)> appRoutes = {};
+
+    for (final option in MenuOptions) {
+      appRoutes.addAll({option.route : (BuildContext context) => option.screen});
+    }
+    return appRoutes;
+  }
+
+  static Route<dynamic> onGenerateRoute(RouteSettings settings){
+    return MaterialPageRoute(
+            builder: (context) => AlertScreen()
+        );
+  }
+}

@@ -36,6 +36,12 @@ class AppTheme {
             ),
         ),
 
+        sliderTheme: SliderThemeData(
+          activeTrackColor: AppTheme.primary,
+          inactiveTrackColor: AppTheme.primary,
+          thumbColor: AppTheme.primary
+        ),
+
         inputDecorationTheme: InputDecorationTheme(
           floatingLabelStyle: TextStyle(color: primary),
           enabledBorder: OutlineInputBorder(

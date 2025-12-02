@@ -8,62 +8,95 @@ class InputsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    // Mapa, almacenar datos, elementos: select, validación
+    final myFormKey = GlobalKey<FormState>();
+
+    final Map<String, String> formValues = {
+      'nombre': 'Tony',
+      'apellidos': 'Stark',
+      'email': 'tonny@gmail.com',
+      'password': '123456',
+      'role': 'usuario'
+    };
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Forms: Inputs'),
+        title: Text("Forms: Inputs"),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Form(
-          child: Column(
+         child: Form(
+          key: myFormKey,
+           child: Column(
             children: [
               CustomTextFormField(
-                hintText: 'Nombre y apellidos',
-                labelText: 'Nombre y apellidos',
+                hintText: 'Nombre',
+                labelText: 'Nombre',
                 helperText: 'Solo letras',
-                icon: Icons.assignment_ind_outlined,
-                suffixIcon: Icons.supervised_user_circle_outlined
+                icon: Icons. assignment_ind_outlined,
+                suffixIcon: Icons.supervised_user_circle_outlined, 
+                formProperty: 'nombre', 
+                formValues: formValues,
               ),
-              SizedBox(height: 25),
+              SizedBox( height: 25),
               CustomTextFormField(
                 hintText: 'Apellidos',
                 labelText: 'Apellidos',
-                icon: Icons.supervised_user_circle_rounded
+                icon: Icons.supervised_user_circle_rounded,
+                formProperty: 'apellidos', 
+                formValues: formValues,
               ),
-              SizedBox(height: 25),
+              SizedBox( height: 25),
               CustomTextFormField(
-                hintText: 'E-mail',
-                labelText: 'E-mail de registro',
-                icon: Icons.email_rounded
+                hintText: 'E-Mail',
+                labelText: 'E-Mail de registro',
+                icon: Icons.email_rounded,
+                keyboardType: TextInputType.emailAddress,
+                formProperty: 'email', 
+                formValues: formValues,
               ),
-              SizedBox(height: 25),
-              CustomTextFormField(
-                hintText: 'E-mail',
-                labelText: 'E-mail de registro',
-                icon: Icons.email_rounded
-              ),
-              SizedBox(height: 25),
+              SizedBox( height: 25),
               CustomTextFormField(
                 hintText: 'Contraseña',
-                labelText: 'Contraseña',
+                labelText: 'Contraseña del usuario',
                 icon: Icons.password_rounded,
+                keyboardType: TextInputType.emailAddress,
                 obscureText: true,
+                formProperty: 'password', 
+                formValues: formValues,
               ),
-              SizedBox(height: 25),
+              SizedBox( height: 25),
+              DropdownButtonFormField(
+                items: [
+                  DropdownMenuItem(child: Text('Usuario'), value: 'usuario'),
+                  DropdownMenuItem(child: Text('Editor'), value: 'editor'),
+                  DropdownMenuItem(child: Text('Programador'), value: 'programador'),
+                  DropdownMenuItem(child: Text('Administrador'), value: 'administrador')
+                ], 
+                onChanged: ((value){
+                  formValues['role'] = value ?? 'usuario';
+                })
+              ),
+              SizedBox( height: 25),
               ElevatedButton(
                 onPressed: (){
-          
-                },
+
+                  FocusScope.of(context).requestFocus( FocusNode());
+
+                  if( !myFormKey.currentState!.validate()){
+                    print('Formulario no válido');
+                    return;
+                  }
+                  print(formValues);
+                }, 
                 child: SizedBox(
                   width: double.infinity,
                   child: Center(child: Text('Enviar'))
-                ),
+                )
               )
+           
             ],
-          ),
-        ),
+           ),
+         )
       ),
     );
   }

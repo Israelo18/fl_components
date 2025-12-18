@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:fl_components/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class ListViewBuilderScreen extends StatefulWidget {
@@ -23,6 +24,7 @@ class _ListViewBuilderScreenState extends State<ListViewBuilderScreen> {
       print('${scrollController.position.pixels}, ${scrollController.position.maxScrollExtent}');
       if (scrollController.position.pixels >= scrollController.position.maxScrollExtent) {
         //add5();
+        fetchData();
       }
     });
   }
@@ -38,6 +40,11 @@ class _ListViewBuilderScreenState extends State<ListViewBuilderScreen> {
 
     await Future.delayed(Duration(seconds: 3));
     add5();
+
+    isLoading = false;
+    setState(() {
+      
+    });
   }
 
   void add5() {
@@ -52,23 +59,63 @@ class _ListViewBuilderScreenState extends State<ListViewBuilderScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: MediaQuery.removePadding(
         context: context,
         removeTop: true,
         removeBottom: true,
-        child: ListView.builder(
-          itemCount: 50,
-          itemBuilder: (BuildContext context, int index) {
-            return FadeInImage(
-              width: double.infinity,
-              height: 250,
-              fit: BoxFit.cover,
-              placeholder: const AssetImage('assets/jar-loading.gif'),
-              image: NetworkImage('https://picsum.photos/500/600?image=$index'),
-            );
-          },
+        child: Stack(
+          children: [
+            ListView.builder(
+              controller: scrollController,
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics()
+              ),
+              itemCount: imagesIds.length,
+              itemBuilder: (BuildContext context, int index) {
+                return FadeInImage(
+                  width: double.infinity,
+                  height: 250,
+                  fit: BoxFit.cover,
+                  placeholder: const AssetImage('assets/jar-loading.gif'),
+                  image: NetworkImage('https://picsum.photos/500/600?image=$index'),
+                );
+              },
+            ),
+
+            if (isLoading)
+            Positioned(
+              child: _LoadingIcon(),
+              bottom: 15,
+              left: (size.width/2) - _LoadingIcon.loadersize/2,
+            )
+          ],
         ),
+      ),
+    );
+  }
+}
+
+class _LoadingIcon extends StatelessWidget {
+  const _LoadingIcon({
+    super.key,
+  });
+
+  static double loadersize = 60;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(   
+      height: loadersize,
+      width: loadersize,
+      child: const CircularProgressIndicator(color: AppTheme.primary),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.75),
+        shape: BoxShape.circle,
       ),
     );
   }
